@@ -20,7 +20,7 @@ public class RestGetIntegrationTests {
     @Test
     public void testGetAllResponse200() {
 
-        Response response = sendGetReturnResponse(targetUrl, 200);
+        Response response = sendGetAllReturnResponse(targetUrl, 200);
         testResponseHeadersGet(response);
         // Only after deleteAll
         //verifyEmptyResponse(response);
@@ -29,7 +29,7 @@ public class RestGetIntegrationTests {
     @Test
     public void testGetAllInvalidUrlVersionExpected404() {
 
-        Response response = sendGetReturnResponse(invalidTargetUrlVersion, 404);
+        Response response = sendGetAllReturnResponse(invalidTargetUrlVersion, 404);
         testResponseHeadersGet(response);
         verifyErrorJsonResponse(response, ExpectedErrors.NOT_FOUND);
     }
@@ -37,7 +37,7 @@ public class RestGetIntegrationTests {
     @Test
     public void testGetAllInvalidUrlPathExpected404() {
 
-        Response response = sendGetReturnResponse(invalidTargetUrlPath, 404);
+        Response response = sendGetAllReturnResponse(invalidTargetUrlPath, 404);
         testResponseHeadersGet(response);
         verifyErrorJsonResponse(response, ExpectedErrors.NOT_FOUND);
     }
@@ -45,9 +45,9 @@ public class RestGetIntegrationTests {
     @Test
     public void testGetAllFindFirst200() {
 
-        Response response = sendGetReturnResponse(targetUrl, 200);
+        Response response = sendGetAllReturnResponse(targetUrl, 200);
         testResponseHeadersGet(response);
-        final String firstIdFromResponse = getFirstIdFromResponse(response);
+        final String firstIdFromResponse = getFirstIdFromGetAllResponse(response);
         System.out.println(firstIdFromResponse);
         // Only after deleteAll
         //verifyEmptyResponse(response);
