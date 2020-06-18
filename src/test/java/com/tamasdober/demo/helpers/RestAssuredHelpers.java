@@ -3,13 +3,15 @@ package com.tamasdober.demo.helpers;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
+import java.util.List;
+
 import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 public class RestAssuredHelpers {
 
     // Verifies response code and sends back the REST-assured Response object
-    public static Response sendGetReturnResponse(String targetUrl, Integer expectedStatusCode) {
+    public static Response sendGetAllReturnResponse(String targetUrl, Integer expectedStatusCode) {
 
         return given().
             when().get(targetUrl).
@@ -18,9 +20,22 @@ public class RestAssuredHelpers {
             extract().response();
     }
 
-    public static String getFirstIdFromResponse(Response response) {
+    public static String getFirstIdFromGetAllResponse(Response response) {
 
         return response.jsonPath().getString("id[0]");
+    }
+
+
+    public static String[] getAllIdsFromGetAllResponse(Response response) {
+
+        final String id = response.jsonPath().getString("id");
+        return id.substring(1, id.length() - 1).split(",");
+    }
+
+    public static Integer getAllIdsListSizeFromGetAllResponse(Response response) {
+
+        final List<Object> list = response.jsonPath().getList("$");
+        return list.size();
     }
 
     public static void verifyEmptyResponse(Response response) {
@@ -70,4 +85,13 @@ public class RestAssuredHelpers {
 
         assertEquals("1", response.asString());
     }
+
+    public static void deleteById(String targetUrl, String id, Integer expectedStatusCode) {
+
+        given().
+            when().delete(targetUrl + "/" + id).
+            then().statusCode(expectedStatusCode).
+            log().all();
+    }
+
 }
